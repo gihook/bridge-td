@@ -1,0 +1,148 @@
+@startuml
+
+component Calculators {
+		interface IResultCalculator {
+				+PairTournamnetScore[] calculatePairScores(Tournament tournament);
+				+BoardScore calculateCurrentBoardScore(Tournament tournament, TournamentPlayer player, int boardNumber);
+		}
+
+		class MatchpointsResultCalculator { }
+
+		class ImpsResultCalculator { }
+
+		class ContractResultCalculator {
+				+int calculateResult(Contract contract, int numberOfOvertricks);
+		}
+}
+
+component Movements {
+		class RoundHandler {
+				+TableInfo getTableInfoForRound(Tournament tournament, TournamentPlayer player, int roundNumber);
+				+TableInfo[] getTableInfosForPlayer(Tournament tournament, TournamentPlayer player);
+		}
+
+		class Movement {
+				+string id;
+				+int numberOfTables;
+				+int numberOfPairs;
+
+				+RoundInfo[] roundInfos;
+		}
+
+		class RoundInfo {
+				+int roundNumber;
+				+TableInfo[] tableInfos;
+		}
+
+		class TableInfo {
+				+int tableNumber;
+				+Pair nsPair;
+				+Pair ewPair;
+		}
+
+		interface IMovementFactory {
+				+Movement getMovement(Pair[] pairs, int numberOfBoards);
+		}
+}
+
+component Tournaments {
+		class TournamentHandler {
+				+void enterScoreAsPlayer(Tournament tournament, TournamentPlayer player, int boardNumber, Contract contract);
+				+void enterScoreAsDirector(Tournament tournament, TournamentPlayer player, int boardNumber, Contract contract);
+		}
+
+		class PlayerProvider {
+				+TournamentPlayer getPlayer(int userId);
+		}
+}
+
+component Models {
+		class TournamentPlayer {
+				+int userId;
+				+int pairId;
+				+string displayName;
+		}
+
+		class Pair {
+				+int id;
+				+TournamentPlayer[] players;
+		}
+
+		class PairTournamnetScore {
+				+string pairId;
+				+decimal score;
+				+int position;
+				+ScoreType scoreType;
+		}
+
+		class BoardScore {
+				+BoardEntry[] boardEntries;
+				+decimal pairScore;
+		}
+
+		enum ScoreType {
+				MPs,
+				IMPs
+		}
+
+		class Tournament {
+				+Pair[] pairs;
+				+Board[] boards;
+				+Movement movement;
+				+Dictionary<int, BoardEntry[]> boardEntriesPerBoard;
+		}
+
+		class Board {
+				+int boardNumber;
+				+Vulnerability vulnerability;
+				+Card[] cards
+		}
+
+		class Card {
+				+Suit suit;
+				+char value;
+		}
+
+		enum Vulnerability {
+				None,
+				EW,
+				NS,
+				All
+		}
+
+		class BoardEntry {
+				+int boardNumber;
+				+Contract contract;
+				+int score;
+		}
+
+		class Contract {
+				+PlayerSeat declarer;
+				+Suit suit;
+				+int level;
+				+Penalty penalty;
+				+Card lead;
+		}
+
+		enum PlayerSeat {
+				North,
+				South,
+				East,
+				West
+		}
+
+		enum Suit {
+				Clubs,
+				Diamonds,
+				Hearts,
+				Spades,
+		}
+
+		enum Penalty {
+				None,
+				Doubled,
+				Redubled
+		}
+}
+
+@enduml
