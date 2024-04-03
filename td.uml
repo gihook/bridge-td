@@ -3,15 +3,21 @@
 component Calculators {
 		interface IResultCalculator {
 				+PairTournamnetScore[] calculatePairScores(Tournament tournament);
-				+BoardScore calculateCurrentBoardScore(Tournament tournament, TournamentPlayer player, int boardNumber);
+				+BoardScore calculateBoardScore(Tournament tournament, TournamentPlayer player, int boardNumber);
 		}
 
-		class MatchpointsResultCalculator { }
-
-		class ImpsResultCalculator { }
+		component Implementations {
+				class MatchpointsResultCalculator { }
+				class ButlerResultCalculator { }
+				class ImpResultCalculator { }
+		}
 
 		class ContractResultCalculator {
 				+int calculateResult(Contract contract, int numberOfOvertricks);
+		}
+
+		class ResultCalculatorFactory() {
+				+IResultCalculator GetResultCalculator(Tournament tournament);
 		}
 }
 
@@ -47,8 +53,16 @@ component Movements {
 
 component Tournaments {
 		class TournamentHandler {
-				+void enterScoreAsPlayer(Tournament tournament, TournamentPlayer player, int boardNumber, Contract contract);
-				+void enterScoreAsDirector(Tournament tournament, TournamentPlayer player, int boardNumber, Contract contract);
+				-Tournament tournament;
+
+				+TournamentHandler(Tournament tournament, IResultCalculator resultCalculator);
+
+				+void enterScoreAsPlayer(BoardEntry BoardEntry, TournamentPlayer player);
+				+void enterScoreAsDirector(BoardEntry BoardEntry);
+				+BoardScore getCurrentBoardScore(int boardNumber);
+
+				+PairTournamentScore[] getRunningScore();
+				+RoundInfo getCurrentRoundInfo();
 		}
 
 		class PlayerProvider {
@@ -80,6 +94,11 @@ component Models {
 				+decimal pairScore;
 		}
 
+		class BoardResult {
+				+decimal imps;
+				+decimal ms;
+		}
+
 		enum ScoreType {
 				MPs,
 				IMPs
@@ -90,6 +109,8 @@ component Models {
 				+Board[] boards;
 				+Movement movement;
 				+Dictionary<int, BoardEntry[]> boardEntriesPerBoard;
+				+int currentRound;
+				+bool isCompleted;
 		}
 
 		class Board {
