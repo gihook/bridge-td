@@ -86,4 +86,49 @@ public class ContractResultCalculatorTests
         };
         Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
     }
+
+    [Theory(DisplayName = "Vulnerable scores")]
+    [InlineData(1, Suit.NT, 3, 180)]
+    [InlineData(3, Suit.NT, 3, 690)]
+    [InlineData(5, Suit.Hearts, 2, 710)]
+    [InlineData(5, Suit.Clubs, 2, 640)]
+    [InlineData(6, Suit.Clubs, 1, 1390)]
+    [InlineData(7, Suit.Clubs, 0, 2140)]
+    [InlineData(6, Suit.NT, 0, 1440)]
+    public void Test6(int level, Suit suit, int overtricks, int score)
+    {
+        var calculator = new ContractResultCalculator();
+        var contract = new Contract
+        {
+            Level = level,
+            Suit = suit,
+            IsVulnerable = true
+        };
+        Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
+    }
+
+    [Fact(DisplayName = "Random tests for contracts")]
+    public void Tests6()
+    {
+        var calculator = new ContractResultCalculator();
+        var contract = new Contract
+        {
+            Level = 4,
+            Suit = Suit.NT,
+            IsVulnerable = true,
+            Penalty = Penalty.Redoubled
+        };
+        var score = 1920;
+        Assert.Equal(calculator.CalculateResult(contract, 2), score);
+
+        var contract2 = new Contract
+        {
+            Level = 4,
+            Suit = Suit.NT,
+            IsVulnerable = true,
+            Penalty = Penalty.Doubled
+        };
+        var score2 = 1210;
+        Assert.Equal(calculator.CalculateResult(contract2, 2), score2);
+    }
 }

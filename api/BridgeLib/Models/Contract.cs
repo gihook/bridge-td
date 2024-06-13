@@ -7,5 +7,6 @@ namespace BridgeLib.Models
         public int Level { get; set; }
         public Penalty Penalty { get; set; }
         public Card? Lead { get; set; }
+        public bool IsVulnerable { get; set; }
     }
 }

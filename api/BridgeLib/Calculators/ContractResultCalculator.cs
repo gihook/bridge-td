@@ -50,11 +50,13 @@ namespace BridgeLib.Calculators
 
         private int GetOvertrickValue(Contract contract)
         {
+            var multiplier = contract.IsVulnerable ? 2 : 1;
+
             if (contract.Penalty == Penalty.Redoubled)
-                return 200;
+                return 200 * multiplier;
 
             if (contract.Penalty == Penalty.Doubled)
-                return 100;
+                return 100 * multiplier;
 
             return GetTrickValue(contract);
         }
@@ -75,10 +77,10 @@ namespace BridgeLib.Calculators
         private int GetTrickValue(Contract contract) =>
             contract.Suit == Suit.Clubs || contract.Suit == Suit.Diamonds ? 20 : 30;
 
-        private int GetGameBonus(Contract contract) => 250;
+        private int GetGameBonus(Contract contract) => contract.IsVulnerable ? 450 : 250;
 
-        private int GetSmallSlamBonus(Contract contract) => 500;
+        private int GetSmallSlamBonus(Contract contract) => contract.IsVulnerable ? 750 : 500;
 
-        private int GetGrandSlamBonus(Contract contract) => 1000;
+        private int GetGrandSlamBonus(Contract contract) => 2 * GetSmallSlamBonus(contract);
     }
 }
