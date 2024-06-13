@@ -25,6 +25,9 @@ namespace BridgeLib.Calculators
 
         private int GetPenaltyAward(Contract contract)
         {
+            if (contract.Penalty == Penalty.Redoubled)
+                return 100;
+
             if (contract.Penalty == Penalty.Doubled)
                 return 50;
 
@@ -36,6 +39,9 @@ namespace BridgeLib.Calculators
             var contractBonus = GetContractBonus(contract);
             var levelAward = GetLevelAward(contract);
 
+            if (contract.Penalty == Penalty.Redoubled)
+                return contractBonus + levelAward * 4;
+
             if (contract.Penalty == Penalty.Doubled)
                 return contractBonus + levelAward * 2;
 
@@ -44,6 +50,9 @@ namespace BridgeLib.Calculators
 
         private int GetOvertrickValue(Contract contract)
         {
+            if (contract.Penalty == Penalty.Redoubled)
+                return 200;
+
             if (contract.Penalty == Penalty.Doubled)
                 return 100;
 
