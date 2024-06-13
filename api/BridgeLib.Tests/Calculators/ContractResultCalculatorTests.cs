@@ -5,81 +5,33 @@ namespace BridgeLib.Tests.Calculators;
 
 public class ContractResultCalculatorTests
 {
-    [Fact(DisplayName = "NT contracts")]
-    public void Test1()
+    [Theory(DisplayName = "NT contracts")]
+    [InlineData(1, 0, 90)]
+    [InlineData(2, 0, 120)]
+    [InlineData(1, 1, 120)]
+    [InlineData(3, 0, 400)]
+    [InlineData(3, 1, 430)]
+    [InlineData(6, 1, 1020)]
+    [InlineData(7, 0, 1520)]
+    public void Test1(int level, int overtricks, int score)
     {
         var calculator = new ContractResultCalculator();
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 1, Suit = Suit.NT }, 0),
-            90
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 2, Suit = Suit.NT }, 0),
-            120
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 1, Suit = Suit.NT }, 1),
-            120
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 3, Suit = Suit.NT }, 0),
-            400
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 3, Suit = Suit.NT }, 1),
-            430
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 6, Suit = Suit.NT }, 0),
-            990
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 6, Suit = Suit.NT }, 1),
-            1020
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 7, Suit = Suit.NT }, 0),
-            1520
-        );
+        var contract = new Contract { Level = level, Suit = Suit.NT };
+        Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
     }
 
-    [Fact(DisplayName = "Minor contracts")]
-    public void Test2()
+    [Theory(DisplayName = "Minor contracts")]
+    [InlineData(2, 0, 90)]
+    [InlineData(4, 1, 150)]
+    [InlineData(4, 1, 150)]
+    [InlineData(5, 1, 420)]
+    [InlineData(6, 1, 940)]
+    [InlineData(7, 0, 1440)]
+    public void Test2(int level, int overtricks, int score)
     {
         var calculator = new ContractResultCalculator();
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 2, Suit = Suit.Clubs }, 0),
-            90
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 4, Suit = Suit.Clubs }, 1),
-            150
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 5, Suit = Suit.Clubs }, 1),
-            420
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 6, Suit = Suit.Clubs }, 1),
-            940
-        );
-
-        Assert.Equal(
-            calculator.CalculateResult(new Contract() { Level = 7, Suit = Suit.Diamonds }, 0),
-            1440
-        );
+        var contract = new Contract { Level = level, Suit = Suit.Diamonds };
+        Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
     }
 
     [Theory(DisplayName = "Major contracts")]
