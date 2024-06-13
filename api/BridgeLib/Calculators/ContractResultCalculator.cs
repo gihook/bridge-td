@@ -6,6 +6,9 @@ namespace BridgeLib.Calculators
     {
         public int CalculateResult(Contract contract, int numberOfOverTricks)
         {
+            if (numberOfOverTricks < 0)
+                return GetMinusScore(contract, numberOfOverTricks);
+
             var overtricksAward = numberOfOverTricks * GetOvertrickValue(contract);
             var bareContractValue = GetBareContractValue(contract, numberOfOverTricks);
             var gameBonus = bareContractValue >= 150 ? GetGameBonus(contract) : 0;
@@ -21,6 +24,28 @@ namespace BridgeLib.Calculators
                 + gameBonus
                 + smallSlamBonus
                 + grandSlamBonus;
+        }
+
+        private int GetMinusScore(Contract contract, int numberOfOverTricks)
+        {
+            if (contract.Penalty == Penalty.Doubled)
+                return GetDoubledMinusScore(contract, numberOfOverTricks);
+
+            if (contract.Penalty == Penalty.Redoubled)
+                return GetDoubledMinusScore(contract, numberOfOverTricks) * 2;
+
+            return 50 * numberOfOverTricks * VulnerabilityMultiplier(contract);
+        }
+
+        private int GetDoubledMinusScore(Contract contract, int numberOfOverTricks)
+        {
+            if (numberOfOverTricks == -1)
+                return (-100 * VulnerabilityMultiplier(contract));
+
+            if (numberOfOverTricks == -2)
+                return -100 + -200 * VulnerabilityMultiplier(contract);
+
+            return -200 + (numberOfOverTricks + 3 - VulnerabilityMultiplier(contract)) * 300;
         }
 
         private int GetPenaltyAward(Contract contract)
@@ -50,16 +75,16 @@ namespace BridgeLib.Calculators
 
         private int GetOvertrickValue(Contract contract)
         {
-            var multiplier = contract.IsVulnerable ? 2 : 1;
-
             if (contract.Penalty == Penalty.Redoubled)
-                return 200 * multiplier;
+                return 200 * VulnerabilityMultiplier(contract);
 
             if (contract.Penalty == Penalty.Doubled)
-                return 100 * multiplier;
+                return 100 * VulnerabilityMultiplier(contract);
 
             return GetTrickValue(contract);
         }
+
+        private int VulnerabilityMultiplier(Contract contract) => contract.IsVulnerable ? 2 : 1;
 
         private int GetLevelAward(Contract contract)
         {

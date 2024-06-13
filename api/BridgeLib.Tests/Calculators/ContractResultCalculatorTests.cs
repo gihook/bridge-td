@@ -131,4 +131,69 @@ public class ContractResultCalculatorTests
         var score2 = 1210;
         Assert.Equal(calculator.CalculateResult(contract2, 2), score2);
     }
+
+    [Theory(DisplayName = "Defeated contracts")]
+    [InlineData(-1, false, -50)]
+    [InlineData(-2, false, -100)]
+    [InlineData(-4, false, -200)]
+    [InlineData(-4, true, -400)]
+    [InlineData(-5, true, -500)]
+    public void Test7(int overtricks, bool IsVulnerable, int score)
+    {
+        var calculator = new ContractResultCalculator();
+        var contract = new Contract
+        {
+            Level = 7,
+            Suit = Suit.NT,
+            IsVulnerable = IsVulnerable
+        };
+        Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
+    }
+
+    [Theory(DisplayName = "Defeated contracts doubled")]
+    [InlineData(-1, false, -100)]
+    [InlineData(-2, false, -300)]
+    [InlineData(-3, false, -500)]
+    [InlineData(-4, false, -800)]
+    [InlineData(-5, false, -1100)]
+    [InlineData(-13, false, -3500)]
+    [InlineData(-1, true, -200)]
+    [InlineData(-2, true, -500)]
+    [InlineData(-13, true, -3800)]
+    public void Test8(int overtricks, bool IsVulnerable, int score)
+    {
+        var calculator = new ContractResultCalculator();
+        var contract = new Contract
+        {
+            Level = 7,
+            Suit = Suit.NT,
+            IsVulnerable = IsVulnerable,
+            Penalty = Penalty.Doubled
+        };
+        Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
+    }
+
+    [Theory(DisplayName = "Defeated contracts redoubled")]
+    [InlineData(-1, false, -200)]
+    [InlineData(-2, false, -600)]
+    [InlineData(-3, false, -1000)]
+    [InlineData(-4, false, -1600)]
+    [InlineData(-5, false, -2200)]
+    [InlineData(-13, false, -7000)]
+    [InlineData(-1, true, -400)]
+    [InlineData(-2, true, -1000)]
+    [InlineData(-13, true, -7600)]
+    [InlineData(-6, true, -3400)]
+    public void Test9(int overtricks, bool IsVulnerable, int score)
+    {
+        var calculator = new ContractResultCalculator();
+        var contract = new Contract
+        {
+            Level = 7,
+            Suit = Suit.NT,
+            IsVulnerable = IsVulnerable,
+            Penalty = Penalty.Redoubled
+        };
+        Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
+    }
 }
