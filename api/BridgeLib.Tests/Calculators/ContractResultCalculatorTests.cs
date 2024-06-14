@@ -23,7 +23,6 @@ public class ContractResultCalculatorTests
     [Theory(DisplayName = "Minor contracts non vulnerable")]
     [InlineData(2, 0, 90)]
     [InlineData(4, 1, 150)]
-    [InlineData(4, 1, 150)]
     [InlineData(5, 1, 420)]
     [InlineData(6, 1, 940)]
     [InlineData(7, 0, 1440)]
