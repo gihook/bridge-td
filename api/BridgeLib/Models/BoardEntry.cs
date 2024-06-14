@@ -4,5 +4,6 @@ namespace BridgeLib.Models
     {
         public int BoardNumber { get; set; }
         public required Contract Contract { get; set; }
+        public int Result { get; set; }
     }
 }

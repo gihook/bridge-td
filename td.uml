@@ -3,7 +3,7 @@
 component Calculators {
 		interface IResultCalculator {
 				+PairTournamnetScore[] calculatePairScores(Tournament tournament);
-				+BoardScore calculateBoardScore(Tournament tournament, TournamentPlayer player, int boardNumber);
+				+BoardResult[] calculateBoardScore(BoardEntry[] boardEntries);
 		}
 
 		component Implementations {
@@ -95,8 +95,8 @@ component Models {
 		}
 
 		class BoardResult {
-				+decimal imps;
-				+decimal ms;
+				+BoardEntry boardEntry;
+				+decimal score;
 		}
 
 		enum ScoreType {
