@@ -4,11 +4,11 @@ namespace BridgeLib.Tests.Loaders;
 
 public class TournamentFileLoaderTest
 {
-    [Fact(DisplayName = "Load mitchell-5-25-boards.json")]
+    [Fact(DisplayName = "Load mitchell-6-24-boards.json")]
     public async Task Test1()
     {
         var loader = new TournamentFileLoader();
-        var filePath = "./SampleTournamentResults/mitchell-5-25-boards.json";
+        var filePath = "./SampleTournamentResults/mitchell-6-24-boards.json";
         var tournament = await loader.Load(filePath);
 
         Assert.Contains(1, tournament.BoardEntriesPerBoard.Keys);
@@ -31,11 +31,11 @@ public class TournamentFileLoaderTest
         Assert.Equal(Penalty.Doubled, entryWithDouble.Contract.Penalty);
     }
 
-    [Fact(DisplayName = "Descriptors Load mitchell-5-25-boards.json")]
+    [Fact(DisplayName = "Descriptors Load mitchell-6-24-boards.json")]
     public async Task Test2()
     {
         var loader = new TournamentFileLoader();
-        var filePath = "./SampleTournamentResults/mitchell-5-25-boards.json";
+        var filePath = "./SampleTournamentResults/mitchell-6-24-boards.json";
         var tournament = await loader.LoadDescriptor(filePath);
 
         Assert.Contains(1, tournament.BoardResults.Keys);
