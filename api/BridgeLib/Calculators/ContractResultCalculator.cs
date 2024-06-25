@@ -6,6 +6,9 @@ namespace BridgeLib.Calculators
     {
         public int CalculateResult(Contract contract, int numberOfOverTricks)
         {
+            if (contract.Suit == Suit.Pass)
+                return 0;
+
             if (numberOfOverTricks < 0)
                 return GetMinusScore(contract, numberOfOverTricks);
 

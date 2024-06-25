@@ -195,4 +195,12 @@ public class ContractResultCalculatorTests
         };
         Assert.Equal(calculator.CalculateResult(contract, overtricks), score);
     }
+
+    [Fact(DisplayName = "Passed contract should score 0")]
+    public void Test10()
+    {
+        var calculator = new ContractResultCalculator();
+        var contract = new Contract { Suit = Suit.Pass };
+        Assert.Equal(calculator.CalculateResult(contract, 0), 0);
+    }
 }
